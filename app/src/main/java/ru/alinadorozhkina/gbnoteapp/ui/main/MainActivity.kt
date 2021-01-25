@@ -29,12 +29,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         adapter = NoteAdapter()
         ui.recycleViewForNotes.layoutManager = GridLayoutManager(this, 2)
-        ui.recycleViewForNotes.adapter=adapter
+        ui.recycleViewForNotes.adapter = adapter
 
         viewModel.viewState().observe(this, Observer<MainViewState> { state ->
-            state?.let { adapter.notes = state.notes}
+            state?.let { adapter.notes = state.notes }
         })
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

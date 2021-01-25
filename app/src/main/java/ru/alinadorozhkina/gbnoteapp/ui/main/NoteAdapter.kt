@@ -33,7 +33,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
             ui.textViewDayOfTheWeek.text = "Пн"
             ui.textViewTitle.text = note.title
             itemView.setBackgroundColor(note.color)
-                //ui.textViewContent.text = note.note
+            //ui.textViewContent.text = note.note
         }
     }
 }

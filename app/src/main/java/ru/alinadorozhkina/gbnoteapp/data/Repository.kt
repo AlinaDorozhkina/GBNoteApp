@@ -3,7 +3,7 @@ package ru.alinadorozhkina.gbnoteapp.data
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 
 object Repository {
-     private val notes:MutableList<Note> = mutableListOf()
+    private val notes: MutableList<Note> = mutableListOf()
 
     init {
         notes.add(Note("31.12.2020", "Новый год", " Празднование Нового Года", 0xff9575cd.toInt()))
