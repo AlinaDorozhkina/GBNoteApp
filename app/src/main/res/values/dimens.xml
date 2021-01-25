@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text size dimension -->
+    <dimen name="header_text">20sp</dimen>
+    <dimen name="main_text">16sp</dimen>
+    <dimen name="long_text">14sp</dimen>
+    <dimen name="tag_text">14sp</dimen>
+    <dimen name="button_text">14sp</dimen>
+    <dimen name="edit_text">16sp</dimen>
+    <!-- Margin & Padding -->
+    <dimen name="margin_padding_size_xsmall">4dp</dimen>
+    <dimen name="margin_padding_size_small">8dp</dimen>
+    <dimen name="margin_padding_size_medium">16dp</dimen>
+    <dimen name="margin_padding_size_large">24dp</dimen>
+    <!-- Others-->
+    <dimen name="elevation">8dp</dimen>
+</resources>
