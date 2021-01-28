@@ -1,6 +1,5 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
-import android.icu.lang.UCharacter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -8,11 +7,8 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
-import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -1,18 +1,33 @@
 package ru.alinadorozhkina.gbnoteapp.data
 
+import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
+import java.util.*
 
 object Repository {
-    private val notes: MutableList<Note> = mutableListOf()
-
-    init {
-        notes.add(Note("31.12.2020", "Новый год", " Празднование Нового Года", 0xff9575cd.toInt()))
-        notes.add(Note("11.01.2021", "Работа", "Нужно выйти на работу", 0xff9565cd.toInt()))
-    }
-
-    fun getNotes(): MutableList<Note> = notes
-
-
+   private val notes: MutableList<Note> = mutableListOf(
+        Note(id = UUID.randomUUID().toString(),
+            title = "Новый год",
+            note = "Празднование Нового Года",
+            color = Color.WHITE,
+        data = "31.12.2020"),
+        Note(id = UUID.randomUUID().toString(),
+            title = "Новый год",
+            note = "Празднование Нового Года",
+            color = Color.RED,
+        data = "11.01.2021"),
+        Note(id = UUID.randomUUID().toString(),
+            title = "Новый год",
+            note = "Празднование Нового Года",
+            color = Color.PINK,
+            data ="31.12.2020"),
+        Note(id = UUID.randomUUID().toString(),
+            title = "Новый год",
+            note = "Празднование Нового Года",
+            color = Color.BLUE,
+            data ="31.12.2020")
+   )
+     fun getNotes (): List <Note> = notes
 }
 
 
