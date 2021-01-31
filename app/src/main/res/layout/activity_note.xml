@@ -33,14 +33,14 @@
             android:drawableLeft="@drawable/ic_calendar"
             android:drawablePadding="@dimen/margin_padding_size_small"
             android:editable="false"
-            android:hint="Выберите дату"
+            android:hint="@string/choose_data"
             android:inputType="date" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:hint="Заголовок"
+            android:hint="@string/header"
             android:textColorHint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_size_medium"
             android:background="@null"
-            android:hint="Текст заметки"
+            android:hint="@string/note_body"
             android:textColor="@color/black" />
 
     </LinearLayout>
