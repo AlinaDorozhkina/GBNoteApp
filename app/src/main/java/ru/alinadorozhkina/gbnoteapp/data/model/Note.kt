@@ -7,7 +7,7 @@ import java.util.*
 @Parcelize
 data class Note(
     val id: String,
-    val data: String,
+    val data: String?,
     val title: String,
     val note: String,
     val color: Color = Color.WHITE,
@@ -30,10 +30,6 @@ data class Note(
 } enum class Color{
     WHITE,
     BLUE,
-    PINK,
-    RED,
-    YELLOW,
     ORANGE
-
 }
 

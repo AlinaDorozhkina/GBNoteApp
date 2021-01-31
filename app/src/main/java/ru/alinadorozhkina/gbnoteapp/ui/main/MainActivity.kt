@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
+import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
+import ru.alinadorozhkina.gbnoteapp.ui.noteActivity.NoteActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,14 +24,23 @@ class MainActivity : AppCompatActivity() {
         ui = ActivityMainBinding.inflate(layoutInflater)
         setContentView(ui.root)
         setSupportActionBar(ui.myToolbar)
+        ui.addingButton.setOnClickListener { openNoteScreen(null) }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        adapter = NoteAdapter()
+        adapter = NoteAdapter(object : OnItemClickListener {
+            override fun onItemClick(note: Note) {
+               openNoteScreen (note)
+            }
+        })
         ui.recycleViewForNotes.layoutManager = GridLayoutManager(this, 2)
         ui.recycleViewForNotes.adapter = adapter
 
         viewModel.viewState().observe(this, Observer<MainViewState> { state ->
             state?.let { adapter.notes = state.notes }
         })
+    }
+
+    private fun openNoteScreen(note: Note?) {
+        startActivity( NoteActivity.getStartIntent(this,note))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

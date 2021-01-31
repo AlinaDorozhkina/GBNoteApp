@@ -13,19 +13,33 @@
             android:id="@+id/toolbar_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             xmls:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_padding_size_medium"
+
+        android:background="@drawable/kruglye_ugly"
         android:orientation="vertical"
-        android:padding="@dimen/margin_padding_size_medium"
         xmls:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <EditText
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/margin_padding_size_small"
+            android:editable="false"
+            android:hint="Выберите дату"
+            android:inputType="date" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_size_medium"
             android:hint="Заголовок"
             android:textColorHint="@color/black">
 
@@ -38,14 +52,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <EditText
+            android:id="@+id/note_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Текст заметки"
             android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:background="null"
+            android:background="@null"
+            android:hint="Текст заметки"
             android:textColor="@color/black" />
-
-
 
     </LinearLayout>
 
