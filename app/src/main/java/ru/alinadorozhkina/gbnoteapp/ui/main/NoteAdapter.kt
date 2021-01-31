@@ -33,7 +33,6 @@ class NoteAdapter (private val onItemClickListener:OnItemClickListener) : Recycl
         private val ui: ItemNoteBinding = ItemNoteBinding.bind(itemView)
         fun bind(note: Note) {
             ui.textViewData.text = note.data
-            ui.textViewDayOfTheWeek.text = "Пн"
             ui.textViewTitle.text = note.title
             val color = when(note.color) {
                 Color.BLUE -> R.color.blue_dark
@@ -42,7 +41,7 @@ class NoteAdapter (private val onItemClickListener:OnItemClickListener) : Recycl
             }
             itemView.setBackgroundResource(color)
             itemView.setOnClickListener {onItemClickListener.onItemClick(note)}
-            //ui.textViewContent.text = note.note
+            ui.textViewContent.text = note.note
         }
     }
 }

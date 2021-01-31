@@ -7,6 +7,8 @@ import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                openNoteScreen (note)
             }
         })
-        ui.recycleViewForNotes.layoutManager = GridLayoutManager(this, 2)
+        ui.recycleViewForNotes.layoutManager = GridLayoutManager(this,2)
         ui.recycleViewForNotes.adapter = adapter
 
         viewModel.viewState().observe(this, Observer<MainViewState> { state ->

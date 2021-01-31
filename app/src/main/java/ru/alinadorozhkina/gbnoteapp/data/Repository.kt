@@ -1,5 +1,6 @@
 package ru.alinadorozhkina.gbnoteapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.alinadorozhkina.gbnoteapp.data.model.Color
@@ -15,15 +16,13 @@ object Repository {
             title = "Новый год",
             note = "Празднование Нового Года",
             color = Color.ORANGE,
-            data = "31.12.2020"
-        ),
+            data = "31.12.2020"),
         Note(
             id = UUID.randomUUID().toString(),
             title = "Новый год",
             note = "Празднование Нового Года",
             color = Color.BLUE,
-            data = "31.12.2020"
-        )
+            data = "31.12.2020")
     )
 
     init {
@@ -35,6 +34,7 @@ object Repository {
     fun saveNote(note: Note) {
         addOrReplace(note)
         notesLiveData.value = notes
+        Log.d("Repository", " notiesLiveData "+ notesLiveData.value.toString())
     }
 
     private fun addOrReplace(note: Note) {
@@ -43,9 +43,10 @@ object Repository {
                 notes[i] = note
                 return
             }
-            notes.add(note)
         }
+        notes.add(note)
     }
 }
+
 
 

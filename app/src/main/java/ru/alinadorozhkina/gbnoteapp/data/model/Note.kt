@@ -10,7 +10,7 @@ data class Note(
     val data: String?,
     val title: String,
     val note: String,
-    val color: Color = Color.WHITE,
+    val color: Color = Color.BLUE,
     val lastChanges: Date = Date()
 ): Parcelable{
     override fun equals(other: Any?): Boolean {
