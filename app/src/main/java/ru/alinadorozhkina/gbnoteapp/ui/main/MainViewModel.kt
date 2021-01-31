@@ -6,12 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 
-class MainViewModel: ViewModel (){
+class MainViewModel : ViewModel() {
     private val viewStateLiveData: MutableLiveData<MainViewState> = MutableLiveData()
 
     init {
-        viewStateLiveData.value = MainViewState(Repository.getNotes())
+        Repository.getNotes().observeForever() { notes ->
+            viewStateLiveData.value = viewStateLiveData.value?.copy(notes = notes)
+                ?: MainViewState(notes)
+        }
     }
 
-    fun viewState (): LiveData<MainViewState> = viewStateLiveData
+    fun viewState(): LiveData<MainViewState> = viewStateLiveData
 }
