@@ -28,8 +28,10 @@ data class Note(
         return id.hashCode()
     }
 } enum class Color{
-    WHITE,
     BLUE,
-    ORANGE
+    ORANGE,
+    GREEN,
+    YELLOW,
+    RED
 }
 

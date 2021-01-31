@@ -36,8 +36,10 @@ class NoteAdapter (private val onItemClickListener:OnItemClickListener) : Recycl
             ui.textViewTitle.text = note.title
             val color = when(note.color) {
                 Color.BLUE -> R.color.blue_dark
-                Color.WHITE -> R.color.white
                 Color.ORANGE -> R.color.orange_main
+                Color.RED -> R.color.red
+                Color.GREEN -> R.color.green
+                Color.YELLOW -> R.color.yellow
             }
             itemView.setBackgroundResource(color)
             itemView.setOnClickListener {onItemClickListener.onItemClick(note)}

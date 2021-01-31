@@ -23,4 +23,9 @@
     <color name="blue_main">#82b1ff</color>
     <color name="blue_dark">#0081cb</color>
     <color name="blue_light">#b6e3ff</color>
+
+    <color name="red">#ff6e40</color>
+    <color name="yellow">#ffa000</color>
+    <color name="green">#7cb342</color>
+    <color name="pearple">#8c9eff</color>
 </resources>

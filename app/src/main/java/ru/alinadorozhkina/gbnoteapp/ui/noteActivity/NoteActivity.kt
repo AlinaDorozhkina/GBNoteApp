@@ -11,6 +11,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.alinadorozhkina.gbnoteapp.R
@@ -39,6 +41,7 @@ class NoteActivity : AppCompatActivity() {
     private var note: Note? = null
     private lateinit var ui: ActivityNoteBinding
     private lateinit var viewModel: NoteViewModel
+    private lateinit var noteColor: Color
     private val textChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             triggerSaveNote()
@@ -77,8 +80,10 @@ class NoteActivity : AppCompatActivity() {
 
             val color = when (note?.color) {
                 Color.BLUE -> R.color.blue_dark
-                Color.WHITE -> R.color.white
                 Color.ORANGE -> R.color.orange_main
+                Color.RED -> R.color.red
+                Color.GREEN -> R.color.green
+                Color.YELLOW -> R.color.yellow
                 else -> R.color.white
             }
 
@@ -89,6 +94,7 @@ class NoteActivity : AppCompatActivity() {
         ui.datePicker.setOnClickListener { setData() }
         ui.datePicker.addTextChangedListener(textChangeListener)
     }
+
 
     private fun triggerSaveNote() {
         if (ui.titleNote.text == null || ui.titleNote.text!!.length < 3) return
@@ -106,12 +112,13 @@ class NoteActivity : AppCompatActivity() {
     }
 
 
-
-    private fun createNewNote(): Note =  Note(
-            UUID.randomUUID().toString(),
-            ui.datePicker.text.toString(),
-            ui.noteBody.text.toString(),
-            ui.titleNote.text.toString())
+    private fun createNewNote(): Note = Note(
+        UUID.randomUUID().toString(),
+        ui.datePicker.text.toString(),
+        ui.noteBody.text.toString(),
+        ui.titleNote.text.toString(),
+        noteColor
+    )
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
@@ -138,4 +145,34 @@ class NoteActivity : AppCompatActivity() {
         )
         dpd.show()
     }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            val checked = view.isChecked
+            when (view.getId()) {
+                R.id.radio_green ->
+                    if (checked) {
+                        noteColor = Color.GREEN
+                    }
+                R.id.radio_orange ->
+                    if (checked) {
+                        noteColor = Color.ORANGE
+                    }
+                R.id.radio_red ->
+                    if (checked) {
+                        noteColor = Color.RED
+                    }
+                R.id.radio_blue ->
+                    if (checked) {
+                        noteColor = Color.BLUE
+                    }
+                R.id.radio_yellow ->
+                    if (checked) {
+                        noteColor = Color.YELLOW
+                    }
+            }
+        }
+    }
 }
+
+
