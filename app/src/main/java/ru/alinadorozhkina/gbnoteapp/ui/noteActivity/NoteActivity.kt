@@ -6,10 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
@@ -19,14 +17,13 @@ import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
-import ru.alinadorozhkina.gbnoteapp.ui.helpers.EXTRA_VALUE
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.TIME_DATA_FORMAT
 import java.text.SimpleDateFormat
-import java.time.Year
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
+
 
 private const val SAVE_DELAY = 2000L
+private const val EXTRA_VALUE = "extra value"
 
 class NoteActivity : AppCompatActivity() {
 
@@ -70,6 +67,7 @@ class NoteActivity : AppCompatActivity() {
         } else {
             getString(R.string.new_note_title)
         }
+
         initView()
     }
 
@@ -89,16 +87,15 @@ class NoteActivity : AppCompatActivity() {
 
             ui.toolbarNote.setBackgroundColor(resources.getColor(color))
         }
+
         ui.titleNote.addTextChangedListener(textChangeListener)
         ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
         ui.datePicker.addTextChangedListener(textChangeListener)
     }
 
-
     private fun triggerSaveNote() {
         if (ui.titleNote.text == null || ui.titleNote.text!!.length < 3) return
-
 
         Handler(Looper.getMainLooper()).postDelayed({
             note = note?.copy(
@@ -111,7 +108,6 @@ class NoteActivity : AppCompatActivity() {
         }, SAVE_DELAY)
     }
 
-
     private fun createNewNote(): Note = Note(
         UUID.randomUUID().toString(),
         ui.datePicker.text.toString(),
@@ -119,7 +115,6 @@ class NoteActivity : AppCompatActivity() {
         ui.titleNote.text.toString(),
         noteColor
     )
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         android.R.id.home -> {
@@ -137,7 +132,7 @@ class NoteActivity : AppCompatActivity() {
         val dpd = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                ui.datePicker.setText("" + dayOfMonth + "." + month + 1 + ". " + year)
+                ui.datePicker.setText("$dayOfMonth ${monthOfYear + 1} $year")
             },
             year,
             month,

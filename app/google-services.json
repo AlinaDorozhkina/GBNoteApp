@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "641281643961",
+    "project_id": "gbnoteapp",
+    "storage_bucket": "gbnoteapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641281643961:android:10ca60f62c934c52e31268",
+        "android_client_info": {
+          "package_name": "ru.alinadorozhkina.gbnoteapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641281643961-93hhtpekipq3rvgbe8p7e7k0m9o1t7u1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmALgVuiIlePe6IPYEjR6JHtVXI-1rOXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641281643961-93hhtpekipq3rvgbe8p7e7k0m9o1t7u1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

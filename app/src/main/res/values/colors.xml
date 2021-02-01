@@ -16,9 +16,12 @@
     <color name="grey_dark">#373737</color>
     <color name="grey_light">#8e8e8e</color>
 
-    <color name="pink_main">#ff9e80</color>
-    <color name="pink_dark">#c96f53</color>
-    <color name="pink_light">#ffd0b0</color>
+    <color name="pink_main">#8c9eff</color>
+    <color name="pink_dark">#5870cb</color>
+    <color name="pink_light">#c0cfff</color>
+
+    <color name="yel2">#fbc02d</color>
+    <color name="yel_light">#fff263</color>
 
     <color name="blue_main">#82b1ff</color>
     <color name="blue_dark">#0081cb</color>

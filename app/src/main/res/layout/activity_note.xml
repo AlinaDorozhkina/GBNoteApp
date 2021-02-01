@@ -18,11 +18,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/liner_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_padding_size_medium"
 
-        android:background="@drawable/kruglye_ugly"
+        android:background="@color/yel_light"
         android:orientation="vertical"
         xmls:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -30,6 +30,7 @@
             android:id="@+id/date_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_size_medium"
             android:drawableLeft="@drawable/ic_calendar"
             android:drawablePadding="@dimen/margin_padding_size_small"
             android:editable="false"
@@ -49,6 +50,7 @@
             android:id="@+id/radioGroup_colors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_size_medium"
             android:orientation="horizontal">
 
             <RadioButton
@@ -101,7 +103,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:layout_margin="@dimen/margin_padding_size_medium"
+            android:textAlignment="center"
             android:hint="@string/header"
             android:textColorHint="@color/black">
 
@@ -117,11 +120,11 @@
             android:id="@+id/note_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
-            android:background="@null"
+            android:layout_margin="@dimen/margin_padding_size_medium"
+            android:background="@color/white"
+            android:textAlignment="center"
             android:hint="@string/note_body"
             android:textColor="@color/black" />
-
     </LinearLayout>
 
 

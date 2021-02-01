@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         adapter = NoteAdapter(object : OnItemClickListener {
             override fun onItemClick(note: Note) {
-               openNoteScreen (note)
+                openNoteScreen(note)
             }
         })
-        ui.recycleViewForNotes.layoutManager = GridLayoutManager(this,2)
+        ui.recycleViewForNotes.layoutManager = GridLayoutManager(this, 2)
         ui.recycleViewForNotes.adapter = adapter
 
         viewModel.viewState().observe(this, Observer<MainViewState> { state ->
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openNoteScreen(note: Note?) {
-        startActivity( NoteActivity.getStartIntent(this,note))
+        startActivity(NoteActivity.getStartIntent(this, note))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             ).show()
             true
         }
-
         R.id.settings -> {
             Snackbar.make(
                 ui.rootLayout,
@@ -68,7 +67,6 @@ class MainActivity : AppCompatActivity() {
             ).show()
             true
         }
-
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
