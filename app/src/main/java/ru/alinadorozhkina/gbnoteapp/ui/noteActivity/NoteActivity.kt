@@ -6,25 +6,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
-import ru.alinadorozhkina.gbnoteapp.ui.helpers.EXTRA_VALUE
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.TIME_DATA_FORMAT
 import java.text.SimpleDateFormat
-import java.time.Year
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
+
 
 private const val SAVE_DELAY = 2000L
+private const val EXTRA_VALUE = "extra value"
 
 class NoteActivity : AppCompatActivity() {
 
@@ -39,17 +38,18 @@ class NoteActivity : AppCompatActivity() {
     private var note: Note? = null
     private lateinit var ui: ActivityNoteBinding
     private lateinit var viewModel: NoteViewModel
-    private val textChangedListener = object : TextWatcher {
+    private lateinit var noteColor: Color
+    private val textChangeListener = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            triggerSaveNote()
+        }
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             // not used
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             // not used
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            triggerSaveNote()
         }
     }
 
@@ -67,6 +67,7 @@ class NoteActivity : AppCompatActivity() {
         } else {
             getString(R.string.new_note_title)
         }
+
         initView()
     }
 
@@ -77,32 +78,33 @@ class NoteActivity : AppCompatActivity() {
 
             val color = when (note?.color) {
                 Color.BLUE -> R.color.blue_dark
-                Color.WHITE -> R.color.white
                 Color.ORANGE -> R.color.orange_main
+                Color.RED -> R.color.red
+                Color.GREEN -> R.color.green
+                Color.YELLOW -> R.color.yellow
                 else -> R.color.white
             }
 
             ui.toolbarNote.setBackgroundColor(resources.getColor(color))
-            ui.titleNote.addTextChangedListener(textChangedListener)
-            ui.noteBody.addTextChangedListener(textChangedListener)
-            ui.datePicker.addTextChangedListener(textChangedListener)
         }
+
+        ui.titleNote.addTextChangedListener(textChangeListener)
+        ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
+        ui.datePicker.addTextChangedListener(textChangeListener)
     }
 
     private fun triggerSaveNote() {
         if (ui.titleNote.text == null || ui.titleNote.text!!.length < 3) return
 
-        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-            override fun run() {
-                note = note?.copy(
-                    title = ui.titleNote.text.toString(),
-                    note = ui.noteBody.text.toString(),
-                    lastChanges = Date()
-                ) ?: createNewNote()
+        Handler(Looper.getMainLooper()).postDelayed({
+            note = note?.copy(
+                title = ui.titleNote.text.toString(),
+                note = ui.noteBody.text.toString(),
+                lastChanges = Date()
+            ) ?: createNewNote()
 
-                if (note != null) viewModel.saveNote(note!!)
-            }
+            if (note != null) viewModel.saveChanges(note!!)
         }, SAVE_DELAY)
     }
 
@@ -110,7 +112,8 @@ class NoteActivity : AppCompatActivity() {
         UUID.randomUUID().toString(),
         ui.datePicker.text.toString(),
         ui.noteBody.text.toString(),
-        ui.titleNote.text.toString()
+        ui.titleNote.text.toString(),
+        noteColor
     )
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
@@ -129,7 +132,7 @@ class NoteActivity : AppCompatActivity() {
         val dpd = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                ui.datePicker.setText("" + dayOfMonth + " " + month + 1 + ", " + year)
+                ui.datePicker.setText("$dayOfMonth ${monthOfYear + 1} $year")
             },
             year,
             month,
@@ -137,4 +140,34 @@ class NoteActivity : AppCompatActivity() {
         )
         dpd.show()
     }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            val checked = view.isChecked
+            when (view.getId()) {
+                R.id.radio_green ->
+                    if (checked) {
+                        noteColor = Color.GREEN
+                    }
+                R.id.radio_orange ->
+                    if (checked) {
+                        noteColor = Color.ORANGE
+                    }
+                R.id.radio_red ->
+                    if (checked) {
+                        noteColor = Color.RED
+                    }
+                R.id.radio_blue ->
+                    if (checked) {
+                        noteColor = Color.BLUE
+                    }
+                R.id.radio_yellow ->
+                    if (checked) {
+                        noteColor = Color.YELLOW
+                    }
+            }
+        }
+    }
 }
+
+

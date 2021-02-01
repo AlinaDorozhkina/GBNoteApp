@@ -5,5 +5,8 @@
 
     <string name="add_note">Добавить заметку</string>
     <string name="new_note_title">Новая заметка</string>
+    <string name="choose_data">Выберите дату</string>
+    <string name="header">Заголовок</string>
+    <string name="note_body">Текст заметки</string>
 
 </resources>
