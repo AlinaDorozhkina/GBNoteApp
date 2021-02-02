@@ -1,12 +1,10 @@
 package ru.alinadorozhkina.gbnoteapp.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
-import ru.alinadorozhkina.gbnoteapp.R
 
 abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
@@ -16,6 +14,7 @@ abstract class BaseActivity<T, VS : BaseViewState<T>> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(ui.root)
         viewModel.getViewState().observe(this, object : Observer<VS> {
             override fun onChanged(t: VS) {
                 if (t == null) return
