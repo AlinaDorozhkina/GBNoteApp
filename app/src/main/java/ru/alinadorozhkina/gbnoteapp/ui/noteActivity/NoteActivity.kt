@@ -13,10 +13,12 @@ import android.view.View
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
+import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.TIME_DATA_FORMAT
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,19 +27,21 @@ import java.util.*
 private const val SAVE_DELAY = 2000L
 private const val EXTRA_VALUE = "extra value"
 
-class NoteActivity : AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>() {
+
+    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val ui: ActivityNoteBinding by lazy { ActivityNoteBinding.inflate(layoutInflater) }
+    override val layoutRes: Int = R.layout.activity_note
 
     companion object {
-        fun getStartIntent(context: Context, note: Note?): Intent {
+        fun getStartIntent(context: Context, noteId: String?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
-            intent.putExtra(EXTRA_VALUE, note)
+            intent.putExtra(EXTRA_VALUE, noteId)
             return intent
         }
     }
 
     private var note: Note? = null
-    private lateinit var ui: ActivityNoteBinding
-    private lateinit var viewModel: NoteViewModel
     private lateinit var noteColor: Color
     private val textChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -55,38 +59,27 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ui = ActivityNoteBinding.inflate(layoutInflater)
-        setContentView(ui.root)
 
-        note = intent.getParcelableExtra(EXTRA_VALUE)
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-        setSupportActionBar(ui.toolbarNote)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = if (note != null) {
-            SimpleDateFormat(TIME_DATA_FORMAT, Locale.getDefault()).format(note!!.lastChanges)
-        } else {
-            getString(R.string.new_note_title)
+        val noteId = intent.getStringExtra(EXTRA_VALUE)
+        noteId?.let {
+            viewModel.loadNote(it)
         }
-
-        initView()
+        if (noteId == null) supportActionBar?.title = getString(R.string.new_note_title)
     }
 
     private fun initView() {
-        if (note != null) {
-            ui.titleNote.setText(note?.title ?: "")
-            ui.noteBody.setText(note?.note ?: "")
+        ui.titleNote.setText(note?.title ?: "")
+        ui.noteBody.setText(note?.note ?: "")
 
-            val color = when (note?.color) {
-                Color.BLUE -> R.color.blue_dark
-                Color.ORANGE -> R.color.orange_main
-                Color.RED -> R.color.red
-                Color.GREEN -> R.color.green
-                Color.YELLOW -> R.color.yellow
-                else -> R.color.white
-            }
-
-            ui.toolbarNote.setBackgroundColor(resources.getColor(color))
+        val color = when (note?.color) {
+            Color.BLUE -> R.color.blue_dark
+            Color.ORANGE -> R.color.orange_main
+            Color.RED -> R.color.red
+            Color.GREEN -> R.color.green
+            Color.YELLOW -> R.color.yellow
+            else -> R.color.white
         }
+        ui.toolbarNote.setBackgroundColor(resources.getColor(color))
 
         ui.titleNote.addTextChangedListener(textChangeListener)
         ui.noteBody.addTextChangedListener(textChangeListener)
@@ -167,6 +160,11 @@ class NoteActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    override fun renderData(data: Note?) {
+        this.note = data
+        initView()
     }
 }
 

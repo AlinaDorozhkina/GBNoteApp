@@ -15,7 +15,7 @@ interface OnItemClickListener {
 
 class NoteAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
-    var notes: MutableList<Note> = mutableListOf()
+    var notes: List<Note> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
