@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
@@ -55,32 +56,37 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setSupportActionBar(ui.toolbarNote)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val noteId = intent.getStringExtra(EXTRA_VALUE)
         noteId?.let {
             viewModel.loadNote(it)
         }
+
         if (noteId == null) supportActionBar?.title = getString(R.string.new_note_title)
-    }
-
-    private fun initView() {
-        ui.titleNote.setText(note?.title ?: "")
-        ui.noteBody.setText(note?.note ?: "")
-
-        val color = when (note?.color) {
-            Color.BLUE -> R.color.blue_dark
-            Color.ORANGE -> R.color.orange_main
-            Color.RED -> R.color.red
-            Color.GREEN -> R.color.green
-            Color.YELLOW -> R.color.yellow
-            else -> R.color.white
-        }
-        ui.toolbarNote.setBackgroundColor(resources.getColor(color))
 
         ui.titleNote.addTextChangedListener(textChangeListener)
         ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
         ui.datePicker.addTextChangedListener(textChangeListener)
+    }
+
+    private fun initView() {
+        if (note != null) {
+            ui.titleNote.setText(note?.title ?: "")
+            ui.noteBody.setText(note?.note ?: "")
+
+            val color = when (note?.color) {
+                Color.BLUE -> R.color.blue_dark
+                Color.ORANGE -> R.color.orange_main
+                Color.RED -> R.color.red
+                Color.GREEN -> R.color.green
+                Color.YELLOW -> R.color.yellow
+                else -> R.color.white
+            }
+            ui.toolbarNote.setBackgroundColor(resources.getColor(color))
+        }
     }
 
     private fun triggerSaveNote() {
@@ -159,6 +165,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     override fun renderData(data: Note?) {
+        Log.d("note activity", " вызван метод renderData")
         this.note = data
         initView()
     }

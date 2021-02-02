@@ -15,7 +15,7 @@ class MainViewModel(val repository: Repository = Repository) :
 
             when (t) {
                 is NoteResult.Success<*> -> {
-                    viewStateLiveData.value = MainViewState(notes = t.data as List<Note>)
+                    viewStateLiveData.value = MainViewState(notes = t.data as? List<Note>)
                 }
                 is NoteResult.Error -> {
                     viewStateLiveData.value = MainViewState(error = t.error)
