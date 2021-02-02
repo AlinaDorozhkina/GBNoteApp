@@ -1,15 +1,10 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
@@ -17,10 +12,10 @@ import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.noteActivity.NoteActivity
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(){
+class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
-    override val viewModel: MainViewModel by lazy {ViewModelProvider(this).get(MainViewModel::class.java) }
-    override val ui: ActivityMainBinding by lazy {ActivityMainBinding.inflate(layoutInflater)}
+    override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override val layoutRes: Int = R.layout.activity_main
     lateinit var adapter: NoteAdapter
 

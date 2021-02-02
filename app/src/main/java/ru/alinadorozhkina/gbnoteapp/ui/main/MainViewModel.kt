@@ -1,10 +1,6 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
-
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.data.model.NoteResult

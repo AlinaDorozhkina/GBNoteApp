@@ -11,16 +11,12 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewbinding.ViewBinding
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
-import ru.alinadorozhkina.gbnoteapp.ui.helpers.TIME_DATA_FORMAT
-import java.text.SimpleDateFormat
 import java.util.*
 
 

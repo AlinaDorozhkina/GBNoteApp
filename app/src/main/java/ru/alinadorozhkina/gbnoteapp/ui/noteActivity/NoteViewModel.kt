@@ -1,7 +1,6 @@
 package ru.alinadorozhkina.gbnoteapp.ui.noteActivity
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.data.model.NoteResult
