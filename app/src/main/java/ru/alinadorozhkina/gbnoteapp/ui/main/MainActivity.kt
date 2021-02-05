@@ -14,8 +14,12 @@ import ru.alinadorozhkina.gbnoteapp.ui.noteActivity.NoteActivity
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
-    override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
-    override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    override val viewModel: MainViewModel
+            by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+
+    override val ui: ActivityMainBinding
+            by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override val layoutRes: Int = R.layout.activity_main
     lateinit var adapter: NoteAdapter
 
@@ -67,7 +71,8 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
     }
 
     override fun renderData(data: List<Note>?) {
-        if (data == null) return
-        adapter.notes = data
+        data?.let { dataNotes ->
+            adapter.notes = dataNotes
+        }
     }
 }

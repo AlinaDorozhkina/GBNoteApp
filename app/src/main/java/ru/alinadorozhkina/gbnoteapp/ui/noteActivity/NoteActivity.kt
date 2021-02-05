@@ -18,6 +18,8 @@ import ru.alinadorozhkina.gbnoteapp.data.model.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
+import ru.alinadorozhkina.gbnoteapp.ui.helpers.format
+import ru.alinadorozhkina.gbnoteapp.ui.helpers.getColorInt
 import java.util.*
 
 
@@ -26,8 +28,12 @@ private const val EXTRA_VALUE = "extra value"
 
 class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
-    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
-    override val ui: ActivityNoteBinding by lazy { ActivityNoteBinding.inflate(layoutInflater) }
+    override val viewModel: NoteViewModel
+            by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+
+    override val ui: ActivityNoteBinding
+            by lazy { ActivityNoteBinding.inflate(layoutInflater) }
+
     override val layoutRes: Int = R.layout.activity_note
 
     companion object {
@@ -62,9 +68,9 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         val noteId = intent.getStringExtra(EXTRA_VALUE)
         noteId?.let {
             viewModel.loadNote(it)
+        } ?: run {
+            supportActionBar?.title = getString(R.string.new_note_title)
         }
-
-        if (noteId == null) supportActionBar?.title = getString(R.string.new_note_title)
 
         ui.titleNote.addTextChangedListener(textChangeListener)
         ui.noteBody.addTextChangedListener(textChangeListener)
@@ -73,25 +79,23 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private fun initView() {
-        if (note != null) {
-            ui.titleNote.setText(note?.title ?: "")
-            ui.noteBody.setText(note?.note ?: "")
+        note?.run {
+            ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
 
-            val color = when (note?.color) {
-                Color.BLUE -> R.color.blue_dark
-                Color.ORANGE -> R.color.orange_main
-                Color.RED -> R.color.red
-                Color.GREEN -> R.color.green
-                Color.YELLOW -> R.color.yellow
-                else -> R.color.white
-            }
-            ui.toolbarNote.setBackgroundColor(resources.getColor(color))
+            ui.titleNote.setText(title)
+            ui.noteBody.setText(note)
+
+            supportActionBar?.title = lastChanges.format()
         }
+
+        ui.titleNote.addTextChangedListener(textChangeListener)
+        ui.noteBody.addTextChangedListener(textChangeListener)
+        ui.datePicker.setOnClickListener { setData() }
+        ui.datePicker.addTextChangedListener(textChangeListener)
     }
 
     private fun triggerSaveNote() {
         if (ui.titleNote.text == null || ui.titleNote.text!!.length < 3) return
-
         Handler(Looper.getMainLooper()).postDelayed({
             note = note?.copy(
                 title = ui.titleNote.text.toString(),
@@ -99,7 +103,9 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                 lastChanges = Date()
             ) ?: createNewNote()
 
-            if (note != null) viewModel.saveChanges(note!!)
+            note?.let {
+                viewModel.saveChanges(it)
+            }
         }, SAVE_DELAY)
     }
 

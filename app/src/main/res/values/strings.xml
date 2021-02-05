@@ -8,5 +8,6 @@
     <string name="choose_data">Выберите дату</string>
     <string name="header">Заголовок</string>
     <string name="note_body">Текст заметки</string>
+    <string name="snackbar_action">Ошибка</string>
 
 </resources>
