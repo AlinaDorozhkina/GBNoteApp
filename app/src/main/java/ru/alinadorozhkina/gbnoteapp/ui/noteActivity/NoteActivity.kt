@@ -14,8 +14,8 @@ import android.view.View
 import android.widget.RadioButton
 import androidx.lifecycle.ViewModelProvider
 import ru.alinadorozhkina.gbnoteapp.R
-import ru.alinadorozhkina.gbnoteapp.data.model.Color
-import ru.alinadorozhkina.gbnoteapp.data.model.Note
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.format

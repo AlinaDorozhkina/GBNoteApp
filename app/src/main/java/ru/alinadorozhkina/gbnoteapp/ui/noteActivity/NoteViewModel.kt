@@ -2,7 +2,7 @@ package ru.alinadorozhkina.gbnoteapp.ui.noteActivity
 
 import androidx.lifecycle.Observer
 import ru.alinadorozhkina.gbnoteapp.data.Repository
-import ru.alinadorozhkina.gbnoteapp.data.model.Note
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.data.model.NoteResult
 import ru.alinadorozhkina.gbnoteapp.ui.BaseViewModel
 
@@ -14,7 +14,7 @@ class NoteViewModel(private val repository: Repository = Repository) :
         pendingNote = note
     }
 
-    override fun onCleared() { // когда жизненый цикл viewmodel закончится, мы сохраним заметку если она  существует
+    override fun onCleared() {
         if (pendingNote != null) {
             repository.saveNote(pendingNote!!)
         }

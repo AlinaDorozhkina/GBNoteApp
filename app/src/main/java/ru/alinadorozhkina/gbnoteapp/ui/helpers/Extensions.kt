@@ -3,7 +3,7 @@ package ru.alinadorozhkina.gbnoteapp.ui.helpers
 import android.content.Context
 import androidx.core.content.ContextCompat
 import ru.alinadorozhkina.gbnoteapp.R
-import ru.alinadorozhkina.gbnoteapp.data.model.Color
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
 import java.text.SimpleDateFormat
 import java.util.*
 
