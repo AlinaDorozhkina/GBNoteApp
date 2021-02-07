@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.alinadorozhkina.gbnoteapp.R
-import ru.alinadorozhkina.gbnoteapp.data.model.Color
-import ru.alinadorozhkina.gbnoteapp.data.model.Note
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ItemNoteBinding
 
 interface OnItemClickListener {

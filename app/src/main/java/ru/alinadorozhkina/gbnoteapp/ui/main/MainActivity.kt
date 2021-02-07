@@ -1,5 +1,7 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,15 +9,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
-import ru.alinadorozhkina.gbnoteapp.data.model.Note
+import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.noteActivity.NoteActivity
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
-    override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
-    override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    override val viewModel: MainViewModel
+            by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+
+    override val ui: ActivityMainBinding
+            by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override val layoutRes: Int = R.layout.activity_main
     lateinit var adapter: NoteAdapter
 
@@ -67,7 +73,12 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
     }
 
     override fun renderData(data: List<Note>?) {
-        if (data == null) return
-        adapter.notes = data
+        data?.let { dataNotes ->
+            adapter.notes = dataNotes
+        }
+    }
+
+    companion object{
+        fun getStartIntent (context: Context) = Intent (context, MainActivity::class.java)
     }
 }
