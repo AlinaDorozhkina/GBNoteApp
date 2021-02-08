@@ -2,7 +2,6 @@ package ru.alinadorozhkina.gbnoteapp.ui.splash
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,11 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.errors.NoAuthException
-import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivitySplashBinding
 import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.main.MainActivity
-import ru.alinadorozhkina.gbnoteapp.ui.main.MainViewModel
 
 private const val RC_SIGN_IN = 1
 private const val START_DELAY = 1000L
