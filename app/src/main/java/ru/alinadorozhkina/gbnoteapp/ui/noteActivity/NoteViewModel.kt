@@ -3,7 +3,7 @@ package ru.alinadorozhkina.gbnoteapp.ui.noteActivity
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.data.model.NoteResult
-import ru.alinadorozhkina.gbnoteapp.ui.BaseViewModel
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseViewModel
 
 class NoteViewModel(private val repository: Repository = Repository) :
     BaseViewModel<NoteViewState.Data, NoteViewState>() {

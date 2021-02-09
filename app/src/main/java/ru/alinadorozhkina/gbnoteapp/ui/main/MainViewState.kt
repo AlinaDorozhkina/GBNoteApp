@@ -1,7 +1,7 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
-import ru.alinadorozhkina.gbnoteapp.ui.BaseViewState
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseViewState
 
 class MainViewState(val notes: List<Note>? = null, error: Throwable? = null) :
     BaseViewState<List<Note>?>(notes, error)

@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,7 +18,7 @@ import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
-import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.format
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.getColorInt
 import java.util.*
@@ -47,7 +46,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
     }
 
     private var note: Note? = null
-    private lateinit var noteColor: Color
     private var color: Color = Color.BLUE
     private val textChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -79,19 +77,34 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
         ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
         ui.datePicker.addTextChangedListener(textChangeListener)
+
+        ui.colorPicker.onColorClickListener = {
+            color = it
+            setToolbarColor(it)
+            triggerSaveNote()
+        }
     }
 
     private fun initView() {
         note?.run {
             removeEditListener()
-            ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
-            ui.titleNote.setText(title)
-            ui.noteBody.setText(note)
+            if (title != ui.titleNote.text.toString()) {
+                ui.titleNote.setText(title)
+            }
+            if (note != ui.noteBody.text.toString()) {
+                ui.noteBody.setText(title)
+            }
+            setToolbarColor(color)
+
             setEditListener()
 
             supportActionBar?.title = lastChanges.format()
         }
         ui.datePicker.setOnClickListener { setData() }
+    }
+
+    private fun setToolbarColor(color: Color) {
+        ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
     }
 
     private fun triggerSaveNote() {
@@ -100,6 +113,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
             note = note?.copy(
                 title = ui.titleNote.text.toString(),
                 note = ui.noteBody.text.toString(),
+                color = color,
                 lastChanges = Date()
             ) ?: createNewNote()
 
@@ -114,7 +128,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
         ui.datePicker.text.toString(),
         ui.noteBody.text.toString(),
         ui.titleNote.text.toString(),
-        noteColor
+        color
     )
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean =
@@ -123,12 +137,18 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         android.R.id.home -> super.onBackPressed().let { true }
-        //R.id.palette -> togglePalette().let { true }
+        R.id.palette -> togglePalette().let { true }
         R.id.delete_note -> deleteNote().let { true }
         else -> super.onOptionsItemSelected(item)
     }
 
-
+    private fun togglePalette() {
+        if (ui.colorPicker.isOpen) {
+            ui.colorPicker.close()
+        } else {
+            ui.colorPicker.open()
+        }
+    }
 
     private fun deleteNote() {
         AlertDialog.Builder(this)
@@ -137,7 +157,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
             .setPositiveButton(R.string.positive_answer) { _, _ -> viewModel.deleteNote() }
             .show()
     }
-
 
     private fun setData() {
         val c = Calendar.getInstance()
@@ -154,34 +173,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
             day
         )
         dpd.show()
-    }
-
-    fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            val checked = view.isChecked
-            when (view.getId()) {
-                R.id.radio_green ->
-                    if (checked) {
-                        noteColor = Color.GREEN
-                    }
-                R.id.radio_orange ->
-                    if (checked) {
-                        noteColor = Color.ORANGE
-                    }
-                R.id.radio_red ->
-                    if (checked) {
-                        noteColor = Color.RED
-                    }
-                R.id.radio_blue ->
-                    if (checked) {
-                        noteColor = Color.BLUE
-                    }
-                R.id.radio_yellow ->
-                    if (checked) {
-                        noteColor = Color.YELLOW
-                    }
-            }
-        }
     }
 
     override fun renderData(data: NoteViewState.Data) {
@@ -204,6 +195,14 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
         ui.titleNote.removeTextChangedListener(textChangeListener)
         ui.noteBody.removeTextChangedListener(textChangeListener)
         ui.datePicker.removeTextChangedListener(textChangeListener)
+    }
+
+    override fun onBackPressed() {
+        if (ui.colorPicker.isOpen) {
+            ui.colorPicker.close()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
 

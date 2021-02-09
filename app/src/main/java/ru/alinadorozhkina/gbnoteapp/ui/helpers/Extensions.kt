@@ -21,3 +21,5 @@ fun Color.getColorRes(): Int = when (this) {
     Color.GREEN -> R.color.green
     Color.YELLOW -> R.color.yellow
 }
+
+fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()

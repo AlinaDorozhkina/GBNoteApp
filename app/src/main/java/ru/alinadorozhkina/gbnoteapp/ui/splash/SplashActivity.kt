@@ -10,7 +10,7 @@ import com.firebase.ui.auth.AuthUI
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.errors.NoAuthException
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivitySplashBinding
-import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.main.MainActivity
 
 private const val RC_SIGN_IN = 1

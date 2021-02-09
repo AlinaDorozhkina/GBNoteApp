@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityMainBinding
-import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.noteActivity.NoteActivity
 import ru.alinadorozhkina.gbnoteapp.ui.splash.SplashActivity
 
