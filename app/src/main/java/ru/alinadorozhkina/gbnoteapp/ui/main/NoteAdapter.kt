@@ -8,6 +8,7 @@ import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ItemNoteBinding
+import ru.alinadorozhkina.gbnoteapp.ui.helpers.getColorInt
 
 interface OnItemClickListener {
     fun onItemClick(note: Note)
@@ -38,14 +39,8 @@ class NoteAdapter(private val onItemClickListener: OnItemClickListener) :
         fun bind(note: Note) {
             ui.textViewData.text = note.data
             ui.textViewTitle.text = note.title
-            val color = when (note.color) {
-                Color.BLUE -> R.color.blue_dark
-                Color.ORANGE -> R.color.orange_main
-                Color.RED -> R.color.red
-                Color.GREEN -> R.color.green
-                Color.YELLOW -> R.color.yellow
-            }
-            itemView.setBackgroundResource(color)
+
+            ui.container.setCardBackgroundColor(note.color.getColorInt(itemView.context))
             itemView.setOnClickListener { onItemClickListener.onItemClick(note) }
             ui.textViewContent.text = note.note
         }

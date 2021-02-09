@@ -9,9 +9,11 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
@@ -26,7 +28,7 @@ import java.util.*
 private const val SAVE_DELAY = 2000L
 private const val EXTRA_VALUE = "extra value"
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>() {
+class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
 
     override val viewModel: NoteViewModel
             by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
@@ -46,6 +48,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private var note: Note? = null
     private lateinit var noteColor: Color
+    private var color: Color = Color.BLUE
     private val textChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             triggerSaveNote()
@@ -80,18 +83,15 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private fun initView() {
         note?.run {
+            removeEditListener()
             ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
-
             ui.titleNote.setText(title)
             ui.noteBody.setText(note)
+            setEditListener()
 
             supportActionBar?.title = lastChanges.format()
         }
-
-        ui.titleNote.addTextChangedListener(textChangeListener)
-        ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
-        ui.datePicker.addTextChangedListener(textChangeListener)
     }
 
     private fun triggerSaveNote() {
@@ -117,13 +117,27 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         noteColor
     )
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean =
+        menuInflater.inflate(R.menu.menu_note, menu).let { true }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        android.R.id.home -> {
-            onBackPressed()
-            true
-        }
+        android.R.id.home -> super.onBackPressed().let { true }
+        //R.id.palette -> togglePalette().let { true }
+        R.id.delete_note -> deleteNote().let { true }
         else -> super.onOptionsItemSelected(item)
     }
+
+
+
+    private fun deleteNote() {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.delete)
+            .setNegativeButton(R.string.negative_answer) { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton(R.string.positive_answer) { _, _ -> viewModel.deleteNote() }
+            .show()
+    }
+
 
     private fun setData() {
         val c = Calendar.getInstance()
@@ -132,7 +146,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         val day = c.get(Calendar.DAY_OF_MONTH)
         val dpd = DatePickerDialog(
             this,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 ui.datePicker.setText("$dayOfMonth ${monthOfYear + 1} $year")
             },
             year,
@@ -170,10 +184,26 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         }
     }
 
-    override fun renderData(data: Note?) {
-        Log.d("note activity", " вызван метод renderData")
-        this.note = data
+    override fun renderData(data: NoteViewState.Data) {
+        if (data.isDeleted) finish()
+
+        this.note = data.note
+        data.note?.let {
+            color = it.color
+        }
         initView()
+    }
+
+    private fun setEditListener() {
+        ui.titleNote.addTextChangedListener(textChangeListener)
+        ui.noteBody.addTextChangedListener(textChangeListener)
+        ui.datePicker.addTextChangedListener(textChangeListener)
+    }
+
+    private fun removeEditListener() {
+        ui.titleNote.removeTextChangedListener(textChangeListener)
+        ui.noteBody.removeTextChangedListener(textChangeListener)
+        ui.datePicker.removeTextChangedListener(textChangeListener)
     }
 }
 

@@ -14,6 +14,8 @@ object Repository {
     fun getNoteById(id: String) = remoteDataProvider.getNoteById(id)
 
     fun getCurrentUser () = remoteDataProvider.getCurrentUser()
+
+    fun deleteNote (noteId: String) = remoteDataProvider.deleteNote(noteId)
 }
 
 

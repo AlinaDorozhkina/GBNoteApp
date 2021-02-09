@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "701465593198-822u0uc4pcu36gh3sl45ssmv8u64idsh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.alinadorozhkina.gbnoteapp",
+            "certificate_hash": "1620db99461c5d98fbb02fdcc927f7470c7a7456"
+          }
+        },
+        {
           "client_id": "701465593198-va6ic64vnh6eclaj8rm6qm9r4e5qkm85.apps.googleusercontent.com",
           "client_type": 3
         }
