@@ -14,15 +14,17 @@ import ru.alinadorozhkina.gbnoteapp.data.model.models.User
 private const val NOTES_COLLECTION = "my_notes"
 private const val USERS_COLLECTION = "users"
 
-class FireStoreProvider : RemoteDataProvider {
+class FireStoreProvider(
+    private val firebaseAuth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : RemoteDataProvider {
 
     companion object {
         private val TAG = "${FireStoreProvider::class.java.simpleName}:"
     }
 
-    private val db = FirebaseFirestore.getInstance()
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
     override fun saveNote(note: Note): LiveData<NoteResult> =
         MutableLiveData<NoteResult>().apply {

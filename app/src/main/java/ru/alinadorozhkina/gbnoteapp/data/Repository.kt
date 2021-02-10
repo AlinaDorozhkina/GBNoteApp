@@ -1,11 +1,9 @@
 package ru.alinadorozhkina.gbnoteapp.data
 
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
-import ru.alinadorozhkina.gbnoteapp.data.model.providers.FireStoreProvider
 import ru.alinadorozhkina.gbnoteapp.data.model.providers.RemoteDataProvider
 
-object Repository {
-    private val remoteDataProvider: RemoteDataProvider = FireStoreProvider()
+class Repository(private val remoteDataProvider: RemoteDataProvider) {
 
     fun getNotes() = remoteDataProvider.subscribeToAllNotes()
 

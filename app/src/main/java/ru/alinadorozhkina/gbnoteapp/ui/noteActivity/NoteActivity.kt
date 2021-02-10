@@ -10,10 +10,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
@@ -29,8 +27,7 @@ private const val EXTRA_VALUE = "extra value"
 
 class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
 
-    override val viewModel: NoteViewModel
-            by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val viewModel: NoteViewModel by viewModel()
 
     override val ui: ActivityNoteBinding
             by lazy { ActivityNoteBinding.inflate(layoutInflater) }

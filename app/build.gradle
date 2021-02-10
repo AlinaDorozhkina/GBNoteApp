@@ -45,6 +45,8 @@ android {
 }
 
 dependencies {
+    implementation 'org.koin:koin-android:2.2.0'
+    implementation 'org.koin:koin-android-viewmodel:2.2.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.2'
     implementation 'com.google.firebase:firebase-auth:20.0.2'
     def lifecycle_version = "2.2.0"

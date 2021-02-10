@@ -5,7 +5,7 @@ import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.data.model.NoteResult
 import ru.alinadorozhkina.gbnoteapp.ui.base.BaseViewModel
 
-class NoteViewModel(private val repository: Repository = Repository) :
+class NoteViewModel(private val repository: Repository) :
     BaseViewModel<NoteViewState.Data, NoteViewState>() {
 
     private val currentNote: Note?
@@ -46,6 +46,4 @@ class NoteViewModel(private val repository: Repository = Repository) :
             }
         }
     }
-
-
 }
