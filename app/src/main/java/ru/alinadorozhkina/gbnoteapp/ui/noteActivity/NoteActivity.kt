@@ -8,16 +8,15 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.RadioButton
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AlertDialog
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.alinadorozhkina.gbnoteapp.R
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Color
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
 import ru.alinadorozhkina.gbnoteapp.databinding.ActivityNoteBinding
-import ru.alinadorozhkina.gbnoteapp.ui.BaseActivity
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseActivity
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.format
 import ru.alinadorozhkina.gbnoteapp.ui.helpers.getColorInt
 import java.util.*
@@ -26,10 +25,9 @@ import java.util.*
 private const val SAVE_DELAY = 2000L
 private const val EXTRA_VALUE = "extra value"
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>() {
+class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>() {
 
-    override val viewModel: NoteViewModel
-            by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val viewModel: NoteViewModel by viewModel()
 
     override val ui: ActivityNoteBinding
             by lazy { ActivityNoteBinding.inflate(layoutInflater) }
@@ -45,7 +43,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private var note: Note? = null
-    private lateinit var noteColor: Color
+    private var color: Color = Color.BLUE
     private val textChangeListener = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             triggerSaveNote()
@@ -76,22 +74,34 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
         ui.datePicker.addTextChangedListener(textChangeListener)
+
+        ui.colorPicker.onColorClickListener = {
+            color = it
+            setToolbarColor(it)
+            triggerSaveNote()
+        }
     }
 
     private fun initView() {
         note?.run {
-            ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
+            removeEditListener()
+            if (title != ui.titleNote.text.toString()) {
+                ui.titleNote.setText(title)
+            }
+            if (note != ui.noteBody.text.toString()) {
+                ui.noteBody.setText(title)
+            }
+            setToolbarColor(color)
 
-            ui.titleNote.setText(title)
-            ui.noteBody.setText(note)
+            setEditListener()
 
             supportActionBar?.title = lastChanges.format()
         }
-
-        ui.titleNote.addTextChangedListener(textChangeListener)
-        ui.noteBody.addTextChangedListener(textChangeListener)
         ui.datePicker.setOnClickListener { setData() }
-        ui.datePicker.addTextChangedListener(textChangeListener)
+    }
+
+    private fun setToolbarColor(color: Color) {
+        ui.toolbarNote.setBackgroundColor(color.getColorInt(this@NoteActivity))
     }
 
     private fun triggerSaveNote() {
@@ -100,6 +110,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
             note = note?.copy(
                 title = ui.titleNote.text.toString(),
                 note = ui.noteBody.text.toString(),
+                color = color,
                 lastChanges = Date()
             ) ?: createNewNote()
 
@@ -114,15 +125,34 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         ui.datePicker.text.toString(),
         ui.noteBody.text.toString(),
         ui.titleNote.text.toString(),
-        noteColor
+        color
     )
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean =
+        menuInflater.inflate(R.menu.menu_note, menu).let { true }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        android.R.id.home -> {
-            onBackPressed()
-            true
-        }
+        android.R.id.home -> super.onBackPressed().let { true }
+        R.id.palette -> togglePalette().let { true }
+        R.id.delete_note -> deleteNote().let { true }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun togglePalette() {
+        if (ui.colorPicker.isOpen) {
+            ui.colorPicker.close()
+        } else {
+            ui.colorPicker.open()
+        }
+    }
+
+    private fun deleteNote() {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.delete)
+            .setNegativeButton(R.string.negative_answer) { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton(R.string.positive_answer) { _, _ -> viewModel.deleteNote() }
+            .show()
     }
 
     private fun setData() {
@@ -132,7 +162,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         val day = c.get(Calendar.DAY_OF_MONTH)
         val dpd = DatePickerDialog(
             this,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 ui.datePicker.setText("$dayOfMonth ${monthOfYear + 1} $year")
             },
             year,
@@ -142,38 +172,34 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         dpd.show()
     }
 
-    fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            val checked = view.isChecked
-            when (view.getId()) {
-                R.id.radio_green ->
-                    if (checked) {
-                        noteColor = Color.GREEN
-                    }
-                R.id.radio_orange ->
-                    if (checked) {
-                        noteColor = Color.ORANGE
-                    }
-                R.id.radio_red ->
-                    if (checked) {
-                        noteColor = Color.RED
-                    }
-                R.id.radio_blue ->
-                    if (checked) {
-                        noteColor = Color.BLUE
-                    }
-                R.id.radio_yellow ->
-                    if (checked) {
-                        noteColor = Color.YELLOW
-                    }
-            }
+    override fun renderData(data: NoteViewState.Data) {
+        if (data.isDeleted) finish()
+
+        this.note = data.note
+        data.note?.let {
+            color = it.color
         }
+        initView()
     }
 
-    override fun renderData(data: Note?) {
-        Log.d("note activity", " вызван метод renderData")
-        this.note = data
-        initView()
+    private fun setEditListener() {
+        ui.titleNote.addTextChangedListener(textChangeListener)
+        ui.noteBody.addTextChangedListener(textChangeListener)
+        ui.datePicker.addTextChangedListener(textChangeListener)
+    }
+
+    private fun removeEditListener() {
+        ui.titleNote.removeTextChangedListener(textChangeListener)
+        ui.noteBody.removeTextChangedListener(textChangeListener)
+        ui.datePicker.removeTextChangedListener(textChangeListener)
+    }
+
+    override fun onBackPressed() {
+        if (ui.colorPicker.isOpen) {
+            ui.colorPicker.close()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
 

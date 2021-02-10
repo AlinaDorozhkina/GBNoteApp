@@ -2,9 +2,9 @@ package ru.alinadorozhkina.gbnoteapp.ui.splash
 
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 import ru.alinadorozhkina.gbnoteapp.data.model.errors.NoAuthException
-import ru.alinadorozhkina.gbnoteapp.ui.BaseViewModel
+import ru.alinadorozhkina.gbnoteapp.ui.base.BaseViewModel
 
-class SplashViewModel(private val repository: Repository = Repository) :
+class SplashViewModel(private val repository: Repository) :
     BaseViewModel<Boolean?, SplashViewState>() {
 
     fun requestUser() {

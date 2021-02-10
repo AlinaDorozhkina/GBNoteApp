@@ -12,10 +12,14 @@ const val TIME_DATA_FORMAT = "dd.MMM.yy HH:mm"
 fun Date.format(): String = SimpleDateFormat(TIME_DATA_FORMAT, Locale.getDefault()).format(this)
 
 fun Color.getColorInt(context: Context): Int =
-    ContextCompat.getColor(context, when (this) {
-            Color.BLUE -> R.color.blue_dark
-            Color.ORANGE -> R.color.orange_main
-            Color.RED -> R.color.red
-            Color.GREEN -> R.color.green
-            Color.YELLOW -> R.color.yellow
-    })
+    ContextCompat.getColor(context, getColorRes())
+
+fun Color.getColorRes(): Int = when (this) {
+    Color.BLUE -> R.color.blue_dark
+    Color.ORANGE -> R.color.orange_main
+    Color.RED -> R.color.red
+    Color.GREEN -> R.color.green
+    Color.YELLOW -> R.color.yellow
+}
+
+fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
