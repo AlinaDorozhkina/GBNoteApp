@@ -1,5 +1,6 @@
 package ru.alinadorozhkina.gbnoteapp.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
 import ru.alinadorozhkina.gbnoteapp.data.Repository
 import ru.alinadorozhkina.gbnoteapp.data.model.models.Note
@@ -31,7 +32,8 @@ class MainViewModel(private val repository: Repository) :
         repositoryNotes.observeForever(notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public override fun onCleared() {
         repositoryNotes.removeObserver(notesObserver)
     }
 }
